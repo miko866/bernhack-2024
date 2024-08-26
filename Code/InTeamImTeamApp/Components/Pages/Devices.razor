@@ -1,0 +1,138 @@
+@page "/Devices"
+@using InTeamImTeamApp.Components.Dialogs
+@using InTeamImTeamApp.Components.Inputs
+
+@inject IDialogService DialogService
+
+<PageTitle>Devices Overview</PageTitle>
+
+<div class="d-flex flex-column">
+
+    <div class="devices-header pa-3">
+        <SearchComponent TextValue="@TextValue" FilterInputIcon="@Icons.Material.Filled.FilterList" TextValueChanged="OnTextInput" OnAdornmentClick="OpenMudMenu()"/>
+        
+        <MudMenu Color="Color.Secondary"
+                 Size="Size.Medium"
+                 AriaLabel="Open user menu">
+            <MudMenuItem>Score</MudMenuItem>
+            <MudMenuItem>Brand</MudMenuItem>
+            <MudMenuItem>Year</MudMenuItem>
+        </MudMenu> 
+    </div>
+
+    <div class="devices-content pa-5">
+        <h2>Devices Overview</h2>
+
+        @foreach(var model in FilteredListModels)
+        {
+            <div class="devices-item  pa-5 mt-6">
+                <h3 style="font-size: 18px">@model.Name</h3>
+                <span>Your device is <strong>@model.YearsOld</strong> years old.</span> <br/>
+                <span>Your device score is <strong>@model.Points</strong> points!</span><br/>
+                <MudLink Href="@model.DocLink" style="font-size: 14px;" Target="_blank">Documentation</MudLink>
+
+                <div class="d-flex gap-3 mt-4">
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary">Details</MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Error">Market</MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Info">Defect</MudButton>
+                </div>
+            </div>
+        }
+    </div>
+
+    <MudFab Color="Color.Primary" Class="flout-btn" @onclick="OpenDialogAsync" StartIcon="@Icons.Material.Filled.Add"/>
+
+</div>
+
+@code {
+
+    public class ListModel
+    {
+        public string? Name { get; set; }
+        public int YearsOld { get; set; }
+        public int Points { get; set; }
+        public string? DocLink { get; set; }
+    }
+
+    public List<ListModel> ListModels { get; set; } =
+    [
+        new ListModel { Name = "Apple, MacBook Pro Retina \"15\", Mitte 2015", YearsOld = 9, Points = 372, DocLink = "https://support.apple.com/de-ch/111955" },
+        new ListModel { Name = "Apple, iPhone 7, 2016", YearsOld = 8, Points = 420, DocLink = "https://support.apple.com/de-ch/111955" },
+        new ListModel { Name = "HP, LaserJet Pro P1102, 2020", YearsOld = 4, Points = 66, DocLink = "https://support.apple.com/de-ch/111955" },
+        new ListModel { Name = "Siemens, iQ300 Freistehende Mikrowelle, 2022", YearsOld = 2, Points = 16, DocLink = "https://support.apple.com/de-ch/111955" },
+    ];
+
+    private string TextValue { get; set; } = "";
+    
+    public void OnTextInput(string val)
+    {
+        TextValue = val;
+    }
+    
+    private IEnumerable<ListModel> FilteredListModels => 
+        string.IsNullOrWhiteSpace(TextValue) 
+            ? ListModels 
+            : ListModels.Where(model => 
+                model.Name != null && model.Name.Contains(TextValue, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<DialogAddDevice>("Add new device", options);
+    }
+
+    private Action OpenMudMenu()
+    {
+        Console.WriteLine("Open Mud Menu");
+        
+        return () => { };
+    }
+}
+
+<style>
+    .mud-input-control-input-container {
+        background-color: white;
+        border-radius: 20px;
+    }
+    
+    .devices-header {
+       background-color: #E20074;
+       color: white;
+       height: 100px;
+   }
+       
+    .devices-content {
+        background-color: #f5f5f5;
+        border-radius: 20px;
+        flex-grow: 1;
+        margin-top: -15px;
+        max-height: 700px;
+        overflow-y: auto;
+    }
+
+    .devices-item {
+        /*height: 140px;*/
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-custom {
+        border-radius: 12px;
+    }
+    
+    .flout-btn {
+        position: fixed;
+        bottom: 5rem;
+        right: 1rem;
+    }
+    
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+</style>

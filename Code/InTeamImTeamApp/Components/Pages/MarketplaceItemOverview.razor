@@ -1,0 +1,84 @@
+@page "/marketplace-item-overview"
+@inject NavigationManager navigationManager
+
+
+<MudCard>
+    <MudFab Color="Color.Transparent" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Large" IconSize="Size.Large" OnClick="NavigateToCommunity" Style="color: white; font-weight: bold; position: absolute"/>
+    <MudCardMedia Image="images/toaster_gebraucht.jpeg" Height="200" />
+    <MudCardContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudText Class="mb-n3" Typo="Typo.body2">2015</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Class="mb-2" Typo="Typo.h5"><b>Toaster Kuhn Rikon</b></MudText>
+            </MudItem>
+            <MudItem xs="3">
+                <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Title="Favorite"/>
+                <MudText Class="mb-1" Typo="Typo.body2">Intim Müller</MudText>
+            </MudItem>
+            <MudItem xs="3">
+                <MudIcon Icon="@Icons.Material.Filled.Details" Title="Favorite"/>
+                <MudText Class="mb-1" Typo="Typo.body2">Gebraucht</MudText>
+            </MudItem>
+            <MudItem xs="3">
+                <MudIcon Icon="@Icons.Material.Filled.Place" Title="Favorite"/>
+                <MudText Class="mb-1" Typo="Typo.body2">3048 Worblaufen</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.body2"><b>Beschreibung</b></MudText>
+                <MudText Typo="Typo.body2">Da wir 2 Wochen in die Ferien kann dieser Toaster gerne gemietet werden.</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.body2"><b>Abholung</b></MudText>
+                <MudDatePicker Class="mb-3" @bind-Date="Date1" IsDateDisabledFunc="@(time => time < DateTime.Now.AddDays(-1))"></MudDatePicker>
+                <div style="width: 100%; overflow-x: scroll">
+                    <MudButtonGroup class="d-flex" Style="gap: 3px; color: #E20074;" Variant="Variant.Outlined">
+                        <MudButton style="color: #E20074;">13:15</MudButton>
+                        <MudButton style="color: #E20074;">13:30</MudButton>
+                        <MudButton style="color: #E20074;">13:45</MudButton>
+                        <MudButton style="color: #E20074;">14:45</MudButton>
+                        <MudButton style="color: #E20074;">16:30</MudButton>
+                        <MudButton style="color: #E20074;">17:30</MudButton>
+                        <MudButton style="color: #E20074;">18:00</MudButton>
+                    </MudButtonGroup>
+                </div>
+
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.body2"><b>Rückgabe</b></MudText>
+                <MudDatePicker Class="mb-3" @bind-Date="Date2" IsDateDisabledFunc="@(time => time < DateTime.Now.AddDays(-1))"></MudDatePicker>
+                <div style="width: 100%; overflow-x: scroll">
+                    <MudButtonGroup Style="gap: 3px; color: #E20074;" Variant="Variant.Outlined">
+                        <MudButton style="color: #E20074;">16:15</MudButton>
+                        <MudButton style="color: #E20074;">16:30</MudButton>
+                        <MudButton style="color: #E20074;">16:45</MudButton>
+                        <MudButton style="color: #E20074;">18:45</MudButton>
+                        <MudButton style="color: #E20074;">19:30</MudButton>
+                    </MudButtonGroup>
+                </div>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+    <MudCardActions Class="justify-content-end">
+        <MudButton Variant="Variant.Text" Style="color: #E20074;">Request</MudButton>
+    </MudCardActions>
+</MudCard>
+
+<style>
+    .mud-button-group-outlined.mud-button-group-override-styles .mud-button-root {
+        padding: 5px 15px;
+        border: 1px solid #E20074;
+    }
+</style>
+
+@code {
+    public TimeSpan? _time = new TimeSpan(00, 45, 00);
+    public DateTime? Date1 = DateTime.Now;
+    public DateTime? Date2 = DateTime.Now;
+
+    public void NavigateToCommunity()
+    {
+        navigationManager.NavigateTo("/community");
+    }
+}

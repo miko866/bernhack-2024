@@ -1,0 +1,167 @@
+@page "/Community"
+@using InTeamImTeamApp.Components.Inputs
+@inject NavigationManager navigationManager
+
+<PageTitle>Marketplace</PageTitle>
+
+
+<div class="d-flex flex-column">
+    <div class="devices-header pa-3">
+        <SearchComponent TextValue="@TextValue" TextValueChanged="OnTextInput"/>
+    </div>
+
+    <div class="devices-content pa-5">
+    <h2 class="">Community Space</h2>
+
+            @foreach(var model in FilteredListModels)
+            {
+                <MudCard Class="card-custom mb-4 pr-3" Style="border-radius: 12px; cursor: pointer;" @onclick="NavigateToItemOverview">
+                    <div class="row" style="border-radius: 12px">
+                        <div class="col-3 image-container">
+                            <img src="@model.ImageUrl" class="custom-image" width="80px" height="80px" alt="">
+                        </div>
+                        <div class="col-9 pt-2">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="h6">@model.Name</div>
+                                </div>
+                                <div class="col text-end">
+                                    <MudChip T="string" Size="Size.Small" Color="Color.Secondary">@model.Date.ToString("dd.MM.yyyy")</MudChip>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div><MudIcon Size="Size.Small" Icon="@LocationIcon" Title="Favorite"/>@model.Location</div>
+                                </div>
+                                <div class="col text-end">
+                                    <MudChip T="string" Size="Size.Small" Color="@model.ConditionIconColor"><MudIcon Size="Size.Small" Icon="@model.ConditionIcon" Title="Favorite" Class="pr-1"/>@model.Condition</MudChip>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </MudCard>
+            }
+    </div>
+</div>
+
+@code {
+
+    public class ListModel {
+        public string? Name { get; set; }
+        public string? Condition { get; set; }
+        public string? Location { get; set; }
+        public string? ConditionIcon { get; set; }
+        public Color? ConditionIconColor { get; set; } = null!;
+        public string? ImageUrl { get; set; }
+        public DateTime Date { get; set; }
+    }
+
+    private List<ListModel> ListModels { get; set; } =
+    [
+        new ListModel { Name = "Toaster", Location = "Bern", Condition = "Used", ConditionIcon = Icons.Material
+            .Filled.Warning, ConditionIconColor = Color.Secondary, ImageUrl = "/images/toaster_gebraucht.jpeg", 
+            Date = DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "iPhone 7", Location = "Bern", Condition = "New", ConditionIcon = Icons.Material
+            .Filled.NewReleases, ConditionIconColor = Color.Primary, ImageUrl = "/images/iphone7.png", Date = 
+                DateTime.Now
+                .Date },
+        new ListModel { Name = "TV Sony Bravia 55", Location = "Bern", Condition = "New", ConditionIcon = Icons
+            .Material.Filled.NewReleases, ConditionIconColor = Color.Primary, ImageUrl = "/images/tv.jpg", Date 
+                = DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "Sony Playstation 2", Location = "Bern", Condition = "Used", ConditionIcon = Icons
+            .Material.Filled.Warning, ConditionIconColor = Color.Secondary, ImageUrl = "/images/sony.jpeg", 
+            Date = 
+                DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "Sony PSP Version 1000", Location = "Bern", Condition = "New", ConditionIcon = Icons
+            .Material.Filled.NewReleases, ConditionIconColor = Color.Primary, ImageUrl = "/images/psp.png", Date = 
+                DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "Sony DVD Player SBC-23670", Location = "Bern", Condition = "Used", ConditionIcon
+            = Icons.Material.Filled.Warning, ConditionIconColor = Color.Secondary, ImageUrl = "/images/dvd.jpg", 
+            Date = DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "Logitech MX Master 3S", Location = "Bern", Condition = "New", ConditionIcon = Icons
+            .Material.Filled.NewReleases, ConditionIconColor = Color.Primary, ImageUrl = "/images/logitec.png", Date = 
+                DateTime
+                .Now
+                .Date },
+        new ListModel { Name = "Jabra Evolve 75 SE", Location = "Bern", Condition = "Used", ConditionIcon = Icons
+            .Material.Filled.Warning, ConditionIconColor = Color.Secondary, ImageUrl = "/images/sound_2.png", Date = 
+                DateTime.Now
+                .Date },
+        new ListModel { Name = "JBL Charge 4", Location = "Bern", Condition = "Used", ConditionIcon = Icons.Material
+            .Filled.Warning, ConditionIconColor = Color.Secondary, ImageUrl = "/images/sound.jpg", Date = 
+                DateTime.Now
+                .Date },
+    ];
+    private IEnumerable<ListModel> FilteredListModels => 
+        string.IsNullOrWhiteSpace(TextValue) 
+            ? ListModels 
+            : ListModels.Where(model => 
+                (model.Name != null && model.Name.Contains(TextValue, StringComparison.OrdinalIgnoreCase)) ||
+                (model.Location != null && model.Location.Contains(TextValue, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
+
+    public void OnTextInput(string val)
+    {
+        TextValue = val;
+    }
+
+    private void NavigateToItemOverview()
+    {
+        navigationManager.NavigateTo("/marketplace-item-overview");
+    }
+
+    private string LocationIcon { get; set; } = Icons.Material.Filled.LocationOn;
+    private string TextValue { get; set; } = "";
+}
+<style>
+    .mud-input-control-input-container {
+        background-color: white;
+        border-radius: 20px;
+    }
+    
+    .devices-header {
+       background-color: #E20074;
+       color: white;
+       height: 100px;
+   }
+       
+    .devices-content {
+        background-color: #f5f5f5;
+        border-radius: 20px;
+        flex-grow: 1;
+        margin-top: -15px;
+        max-height: 690px;
+        overflow-y: auto;
+    }
+
+    .card-custom {
+        border-radius: 12px;
+        background-color: #ededed;
+    }
+    
+    .image-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-image {
+        height: 70px;
+        object-fit: scale-down;
+        border-radius: 12px;
+    }
+</style>
+
+
+
+
+

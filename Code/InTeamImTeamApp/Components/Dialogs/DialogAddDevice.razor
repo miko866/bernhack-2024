@@ -1,0 +1,23 @@
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.body1"><strong>Add new device</strong></MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.subtitle2">Please choose one of the following options:</MudText>
+        <div>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">QR-Code Scan</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">AI Image</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Manually</MudButton>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private void Cancel() => MudDialog.Cancel();
+}

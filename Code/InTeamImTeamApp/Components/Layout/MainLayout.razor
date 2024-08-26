@@ -1,0 +1,88 @@
+﻿@using InTeamImTeamApp.States
+@inherits LayoutComponentBase
+
+@inject NavigationState NavigationState
+@inject NavigationManager NavigationManager
+
+<div class="page d-flex flex-column" style="height: 100vh;">
+    <main class="pa-0">
+        <article class="px-0 body-wrapper">
+            @Body
+        </article>
+    </main>
+    
+    <div Class="toolbar d-flex justify-content-between">
+        <MudGrid>
+            <MudItem xs="4" Class="d-flex align-items-center justify-content-center">
+                <button class="@($"{(NavigationState.CurrentPage == "Home" ? "active" : "")} d-flex align-items-center justify-content-center")" @onclick="@(() => NavigateTo(""))">
+                    <MudIcon Icon="@Icons.Material.Outlined.Home"></MudIcon>
+                    @if (NavigationState.CurrentPage == "Home")
+                    {
+                        @("Home")
+                    }
+                </button>
+            </MudItem>            
+            <MudItem xs="4" Class="d-flex align-items-center justify-content-center">
+                <button class="@($"{(NavigationState.CurrentPage == "Devices" ? "active" : "")} d-flex align-items-center justify-content-center")" @onclick="@(() => NavigateTo("Devices"))">
+                    <MudIcon Icon="@Icons.Material.Filled.Devices"></MudIcon>
+                    @if (NavigationState.CurrentPage == "Devices")
+                    {
+                        @("Devices")
+                    }
+                </button>
+            </MudItem>
+            <MudItem xs="4" Class="d-flex align-items-center justify-content-center">
+                <button class="@($"{(NavigationState.CurrentPage == "Community" ? "active" : "")} d-flex align-items-center justify-content-center")" @onclick="@(() => NavigateTo("Community"))">
+                    <MudIcon Icon="@Icons.Material.Filled.Groups2"></MudIcon>
+                    @if (NavigationState.CurrentPage == "Community")
+                    {
+                        @("Group")
+                    }
+                </button>
+            </MudItem>
+            @* <MudItem xs="4" Class="d-flex align-items-center justify-content-center"> *@
+            @*     <button class="@($"{(NavigationState.CurrentPage == "Devices" ? "active" : "")} d-flex align-items-center justify-content-center")" @onclick="@(() => NavigateTo("Devices"))"> *@
+            @*         <MudIcon Icon="@Icons.Material.Outlined.Add"></MudIcon> *@
+            @*         @if (NavigationState.CurrentPage == "Devices") *@
+            @*         { *@
+            @*             @("Devices") *@
+            @*         } *@
+            @*     </button> *@
+            @* </MudItem> *@
+        </MudGrid>
+    </div>
+</div>
+
+<style>
+    .body-wrapper{
+        height: calc(100vh - 60px);
+    }
+
+    .toolbar {
+        background: white;
+        color: #E20074;
+        border-top: 1px solid #cbcbcb;
+        height: 60px;
+        z-index: 99;
+    }
+    
+    .active {
+        padding: 4px 8px;
+        background-color: #e2007447;
+        border-radius: 12px;        
+        gap: 4px;
+    }
+</style>
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+@code {
+    private void NavigateTo(string page)
+    {
+        NavigationState.CurrentPage = page;
+        NavigationManager.NavigateTo(page);
+    }
+}

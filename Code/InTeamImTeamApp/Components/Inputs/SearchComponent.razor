@@ -1,0 +1,43 @@
+<MudTextField Immediate="true" 
+              Value="@TextValue" T="string" 
+              ValueChanged="@(OnTextChanged)" 
+              Label="Search..." 
+              Class="mb-5" 
+              Variant="Variant.Outlined" 
+              Margin="Margin.Dense" 
+              AdornmentIcon="@FilterInputIcon" 
+              OnAdornmentClick="AdornmentClick"
+              AdornmentAriaLabel="Filter" 
+              Adornment="Adornment.End" />
+
+@code {
+    [Parameter]
+    public EventCallback<string> TextValueChanged { get; set; }
+    
+    [Parameter]
+    public string TextValue { get; set; } = "";
+
+    [Parameter, EditorRequired]
+    public required string FilterInputIcon { get; set; }
+    
+    [Parameter]
+    public Action? OnAdornmentClick { get; set; }
+
+    private async Task OnTextChanged(string value)
+    {
+        TextValue = value;
+        await TextValueChanged.InvokeAsync(TextValue);
+    }
+
+    private void AdornmentClick()
+    {
+        OnAdornmentClick?.Invoke();
+    }
+
+}
+
+<style>
+    .mud-input-outlined-border {
+        border-radius: 20px !important;
+    }
+</style>

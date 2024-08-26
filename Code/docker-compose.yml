@@ -1,0 +1,6 @@
+﻿services:
+  inteamimteamapp:
+    image: inteamimteamapp
+    build:
+      context: .
+      dockerfile: InTeamImTeamApp/Dockerfile
